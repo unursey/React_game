@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export class ClassComponent extends React.Component {
   state = {
-    isGameOver: true,
+    isGameOver: false,
     result: `Введите число от ${this.props.min} до ${this.props.max}`,
     userNum: '',
     randomNum: Math.floor(Math.random() *
@@ -20,37 +20,27 @@ export class ClassComponent extends React.Component {
   // };
 
   handleSubmit = () => {
-    this.setState(state => ({
-      count: state.count + 1,
-    }));
-
     this.setState(state => {
       if (!state.userNum) {
-        if (!state.count < 0) {
-          return {
-            count: 0,
-          };
-        } else {
-          return {
-            count: state.count - 1,
-          };
-        }
+        return;
       }
 
       if (state.userNum > state.randomNum) {
         return {
           result: `${state.userNum} больше загаданного`,
+          count: state.count + 1,
         };
       }
 
       if (state.userNum < state.randomNum) {
         return {
           result: `${state.userNum} меньше загаданного`,
+          count: state.count + 1,
         };
       }
 
       return {
-        isGameOver: false,
+        isGameOver: true,
         result: `Вы угадали, это число ${state.userNum},
         попыток ${state.count}`,
       };
@@ -71,7 +61,7 @@ export class ClassComponent extends React.Component {
 
   startNewGame = () => {
     this.setState(() => ({
-      isGameOver: true,
+      isGameOver: false,
       result: `Введите число от ${this.props.min} до ${this.props.max}`,
       count: 0,
       randomNum: Math.floor(Math.random() *
@@ -86,7 +76,7 @@ export class ClassComponent extends React.Component {
 
         <form className={style.form} id='form' onSubmit={(e) =>
           e.preventDefault()}>
-          {this.state.isGameOver ? (
+          {!this.state.isGameOver ? (
             <>
               <label className={style.label} htmlFor='user_number'>
                 Угадай число
