@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export class ClassComponent extends React.Component {
   state = {
     isGameOver: false,
-    result: `Введите число от ${this.props.min} до ${this.props.max}`,
+    result: `Угадай число от ${this.props.min} до ${this.props.max}`,
     userNum: '',
     randomNum: Math.floor(Math.random() *
     (this.props.max - this.props.min + 1)) + this.props.min,
@@ -21,8 +21,11 @@ export class ClassComponent extends React.Component {
 
   handleSubmit = () => {
     this.setState(state => {
-      if (!state.userNum) {
-        return;
+      if (!state.userNum || state.userNum > this.props.max ||
+        state.userNum < this.props.min) {
+        return {
+          result: `Введите число от ${this.props.min} до ${this.props.max}`,
+        };
       }
 
       if (state.userNum > state.randomNum) {
@@ -42,7 +45,7 @@ export class ClassComponent extends React.Component {
       return {
         isGameOver: true,
         result: `Вы угадали, это число ${state.userNum},
-        попыток ${state.count}`,
+        попыток ${state.count + 1}`,
       };
     });
 
